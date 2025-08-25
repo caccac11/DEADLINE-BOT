@@ -1,12 +1,11 @@
 import os
 import discord
 from discord.ext import commands
+from keep_alive import keep_alive
 
-# Bật quyền đọc nội dung tin nhắn (nhớ bật trong Developer Portal nếu cần)
 intents = discord.Intents.default()
-intents.message_content = True
+intents.message_content = True  # nhớ bật Message Content Intent trong Developer Portal
 
-# Tạo bot với tiền tố lệnh, ví dụ: !ping
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
@@ -17,5 +16,6 @@ async def on_ready():
 async def ping(ctx):
     await ctx.send("Pong!")
 
-# Lấy token từ biến môi trường (khi deploy trên Render sẽ khai báo ở phần env)
-bot.run(os.environ["DISCORD_TOKEN"])
+if __name__ == "__main__":
+    keep_alive()  # khởi động web keep-alive
+    bot.run(os.environ["DISCORD_TOKEN"])
